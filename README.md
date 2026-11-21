@@ -1,3 +1,5 @@
+<p align="center"><img src="custom_components/gitops/brand/icon@2x.png" alt="GitOps" width="128"></p>
+
 # GitOps for Home Assistant
 
 Keep your Home Assistant configuration in a Git repository and deploy it by pushing. GitOps keeps a
@@ -5,57 +7,41 @@ folder of `/config` in step with a branch: every push brings it up to date, Home
 configuration check runs, and what changed is reloaded. A configuration that doesn't pass the check
 is rolled back before anything reloads.
 
-[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
+[![Home Assistant Marketplace](https://img.shields.io/badge/Home_Assistant-Marketplace-41BDF5.svg?style=for-the-badge)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=raine-works&repository=ha-gitops&category=integration)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=for-the-badge)](LICENSE)
 
-## What it does
+## Features
 
-- **Clones and pulls** the branch into a folder under `/config` (your `configuration.yaml` includes
-  from it: `homeassistant: !include my-home/config.yaml`, `packages: !include_dir_named my-home/packages`…).
-  The repository is the source of truth: edits made to its files in Home Assistant are discarded on
-  the next deploy (files the repository doesn't track are left alone).
-- **Private repositories** over SSH: it makes a deploy key for you to add (read-only is enough).
-  Public ones work over HTTPS with nothing to add.
-- **Deploys on push** through a webhook (GitHub, GitLab, Gitea, Forgejo), checked against its secret.
-  Without an external URL it checks for pushes every few minutes instead. It also catches up at
-  startup with any push it missed.
-- **Checks the configuration first** (what Developer tools → Check configuration runs). When the
-  check fails, the folder goes back to the commit it had, nothing reloads, and a notification shows
-  the errors.
-- **Reloads** everything Home Assistant can reload, the integrations you pick, or nothing.
-- **Tells your automations**: `gitops_deployed` (with the commit, its subject, the files that
-  changed) and `gitops_deploy_failed`, for whatever else a deploy should do: refresh dashboards,
-  reload a config entry, restart for a change that needs it.
-
-Entities per repository: **Status** (deployed, up to date, failed, rolled back, deploying; the last
-deploy's commit, changed files and error as attributes), **Last deploy**, and a **Deploy** button.
-Action: `gitops.deploy` (one repository, or all), answering what each deploy did.
+- Clones and pulls a branch into a folder under `/config`; the repository is the source of truth.
+- Private repositories over SSH with a generated deploy key; public ones over HTTPS.
+- Deploys on a push webhook (GitHub, GitLab, Gitea, Forgejo), or by polling without an external URL. Catches up at startup.
+- Runs Home Assistant's configuration check first and rolls back a configuration that fails it.
+- Reloads everything, chosen integrations, or nothing.
+- Fires `gitops_deployed` and `gitops_deploy_failed` for your automations. Status and Last deploy sensors, a Deploy button and a `gitops.deploy` action.
 
 ## Installation
 
-1. In HACS, add `https://github.com/raine-works/ha-gitops` as a custom repository (Integration),
-   install **GitOps**, and restart Home Assistant.
-2. Settings → Devices & services → Add integration → **GitOps**: the repository URL, its branch, and
-   the folder to keep it in.
-3. For an SSH URL, add the deploy key it shows to the repository (GitHub: Settings → Deploy keys).
-4. Add the webhook it shows (GitHub: Settings → Webhooks; content type `application/json`, the push
-   event only, the secret it gives). The secret is shown once.
-5. Include the folder from `configuration.yaml`, then restart once. Every push after that deploys.
+[![Open your Home Assistant instance and open this repository in the Home Assistant Marketplace.](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=raine-works&repository=ha-gitops&category=integration)
 
-## Example: after each deploy
+1. Open the Home Assistant Marketplace (Settings → Marketplace, or the button above). If **GitOps** isn't listed, add `https://github.com/raine-works/ha-gitops` as a custom repository of type Integration.
+2. Download **GitOps** and restart Home Assistant.
+3. Settings → Devices & services → Add integration → **GitOps**, and follow the steps: the repository, the deploy key (SSH) and the webhook. See [Setup](docs/setup.md).
+4. Include the folder from `configuration.yaml`, then restart once. Every push after that deploys.
 
-```yaml
-triggers:
-  - trigger: event
-    event_type: gitops_deployed
-actions:
-  - action: frontend.reload_themes
-  - if: "{{ trigger.event.data.changed | select('match', 'custom_components/') | list | count > 0 }}"
-    then:
-      - action: persistent_notification.create
-        data:
-          message: "{{ trigger.event.data.subject }} changed an integration: restart to load it."
-```
+## Documentation
+
+| Guide | |
+| :--- | :--- |
+| [Installation](docs/installation.md) | From the Marketplace or by hand |
+| [Setup](docs/setup.md) | The repository, deploy key, webhook and folder |
+| [How a deploy works](docs/how-it-works.md) | Fetch, check, roll back, reload |
+| [Recipes](docs/recipes.md) | Automations after a deploy |
+| [Troubleshooting](docs/troubleshooting.md) | When a deploy fails or doesn't start |
+| [Security](docs/security.md) | Secrets, keys and what a push can change |
+| [Development](docs/development.md) | Tests and releasing |
+| [Entities and events](docs/reference/entities-and-events.md) | Sensors, button, events |
+| [Actions](docs/reference/actions.md) | `gitops.deploy` |
+| [Options](docs/reference/options.md) | Every field |
 
 ## Notes
 
