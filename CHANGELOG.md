@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+- A new icon, in Raineworks' style: a branch merging back, its merge commit lit in the peach-to-teal gradient, on a black tile.
+- The README has the Buy Me a Coffee button.
+
 ## 1.0.0
 
 - First stable release.

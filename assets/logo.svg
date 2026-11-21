@@ -1,12 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- GitOps brand icon: raine-works' integrations' style (a white line glyph on a tile).
-       custom_components/gitops/brand/*.png are rendered from this (scripts/render-brand.sh). -->
-  <rect width="512" height="512" rx="115" fill="#0f766e"/>
-  <g fill="none" stroke="#fff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="176" cy="132" r="38"/>
-    <circle cx="176" cy="380" r="38"/>
-    <circle cx="336" cy="196" r="38"/>
-    <path d="M176 170 V342"/>
-    <path d="M336 234 C336 300 176 280 176 342"/>
-  </g>
+  <!-- GitOps: a branch merging back, its merge commit lit in the Raineworks gradient, on the Raineworks
+       Dashboards tile (black, the gradient's edge, a soft teal glow). The brand icons are rendered from this. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ea9a7e"/>
+      <stop offset="0.5" stop-color="#a6a69a"/>
+      <stop offset="1" stop-color="#2998ad"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ea9a7e" stop-opacity=".6"/>
+      <stop offset=".5" stop-color="#ffffff" stop-opacity=".06"/>
+      <stop offset="1" stop-color="#2998ad" stop-opacity=".6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".66" r=".55">
+      <stop offset="0" stop-color="#2998ad" stop-opacity=".3"/>
+      <stop offset="1" stop-color="#2998ad" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#0b0b0c"/>
+  <rect width="512" height="512" rx="112" fill="url(#glow)"/>
+  <rect x="3" y="3" width="506" height="506" rx="109" fill="none" stroke="url(#edge)" stroke-width="6"/>
+  <path d="M182 162 V350" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round"/>
+  <path d="M330 198 C330 276 182 260 182 330" fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="182" cy="140" r="36" fill="none" stroke="#fff" stroke-width="20"/>
+  <circle cx="330" cy="176" r="36" fill="none" stroke="#fff" stroke-width="20"/>
+  <circle cx="182" cy="376" r="46" fill="url(#g)"/>
 </svg>

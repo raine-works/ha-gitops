@@ -10,6 +10,8 @@ is rolled back before anything reloads.
 [![Home Assistant Marketplace](https://img.shields.io/badge/Home_Assistant-Marketplace-41BDF5.svg?style=for-the-badge)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=raine-works&repository=ha-gitops&category=integration)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=for-the-badge)](LICENSE)
 
+<a href="https://buymeacoffee.com/raineworks"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" /></a>
+
 ## Features
 
 - Clones and pulls a branch into a folder under `/config`; the repository is the source of truth.
@@ -49,6 +51,13 @@ is rolled back before anything reloads.
 - Deploy keys live in `/config/.gitops/` (with their `known_hosts`); removing the repository from
   GitOps deletes its key, never the folder.
 - One deploy at a time per repository; pushes arriving meanwhile become one more deploy after it.
+
+## ☕ Support
+
+If you find this project helpful, consider buying me a coffee to support continued
+maintenance and development:
+
+<a href="https://buymeacoffee.com/raineworks"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" /></a>
 
 ## License
 
