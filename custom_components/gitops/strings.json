@@ -1,0 +1,97 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Repository",
+        "description": "The Git repository holding your configuration, the branch to follow, and the folder under /config to keep it in (your configuration.yaml includes from there). Each deploy makes the folder match the branch exactly: edits made to its files in Home Assistant are discarded.",
+        "data": {
+          "url": "Repository URL",
+          "branch": "Branch",
+          "folder": "Folder"
+        },
+        "data_description": {
+          "url": "SSH (git@github.com:you/home.git) for a private repository, or HTTPS for a public one",
+          "folder": "Under /config; the repository's name when empty"
+        }
+      },
+      "deploy_key": {
+        "title": "Add the deploy key",
+        "description": "Add this key to the repository as a read-only deploy key (GitHub: Settings → Deploy keys → Add deploy key), then select Submit.\n\n`{public_key}`\n\n{error}"
+      },
+      "webhook": {
+        "title": "Deploy on every push",
+        "description": "Add a webhook to the repository so each push deploys at once (GitHub: Settings → Webhooks → Add webhook; content type application/json; just the push event).\n\nPayload URL: `{url}`\n\nSecret: `{secret}`\n\nGitLab: the same URL, with the secret as its token. The secret is shown only now."
+      }
+    },
+    "error": {
+      "bad_folder": "Pick a folder under /config, not one of Home Assistant's own (custom_components, www, .storage…)",
+      "folder_in_use": "That folder already has other files in it",
+      "cannot_access": "Couldn't read the branch: {error}"
+    },
+    "abort": {
+      "already_configured": "That folder is already kept by GitOps"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Deploys",
+        "data": {
+          "branch": "Branch",
+          "check_config": "Check the configuration first",
+          "reload": "Then reload",
+          "reload_domains": "Integrations to reload",
+          "poll_minutes": "Check for pushes every (minutes)"
+        },
+        "data_description": {
+          "check_config": "Home Assistant's own check; a configuration that fails it is rolled back and nothing reloads",
+          "reload_domains": "When reloading chosen integrations",
+          "poll_minutes": "0 = only on the webhook, the button or the action"
+        }
+      }
+    }
+  },
+  "selector": {
+    "reload": {
+      "options": {
+        "all": "Everything Home Assistant can reload",
+        "domains": "The chosen integrations",
+        "none": "Nothing (an automation on gitops_deployed does it)"
+      }
+    }
+  },
+  "entity": {
+    "button": {
+      "deploy": {
+        "name": "Deploy"
+      }
+    },
+    "sensor": {
+      "status": {
+        "name": "Status",
+        "state": {
+          "deployed": "Deployed",
+          "unchanged": "Up to date",
+          "failed": "Failed",
+          "rolled_back": "Rolled back",
+          "running": "Deploying"
+        }
+      },
+      "last_deploy": {
+        "name": "Last deploy"
+      }
+    }
+  },
+  "services": {
+    "deploy": {
+      "name": "Deploy",
+      "description": "Pulls the branch and deploys it now (every repository when none is given).",
+      "fields": {
+        "config_entry_id": {
+          "name": "Repository",
+          "description": "One repository; all when empty."
+        }
+      }
+    }
+  }
+}

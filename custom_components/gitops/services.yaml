@@ -1,0 +1,6 @@
+deploy:
+  fields:
+    config_entry_id:
+      selector:
+        config_entry:
+          integration: gitops

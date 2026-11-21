@@ -1,0 +1,13 @@
+{
+  "domain": "gitops",
+  "name": "GitOps",
+  "codeowners": ["@raine-works"],
+  "config_flow": true,
+  "dependencies": ["webhook"],
+  "documentation": "https://github.com/raine-works/ha-gitops",
+  "integration_type": "service",
+  "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/raine-works/ha-gitops/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

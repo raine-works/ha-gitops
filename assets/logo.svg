@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- GitOps brand icon: raine-works' integrations' style (a white line glyph on a tile).
+       custom_components/gitops/brand/*.png are rendered from this (scripts/render-brand.sh). -->
+  <rect width="512" height="512" rx="115" fill="#0f766e"/>
+  <g fill="none" stroke="#fff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="176" cy="132" r="38"/>
+    <circle cx="176" cy="380" r="38"/>
+    <circle cx="336" cy="196" r="38"/>
+    <path d="M176 170 V342"/>
+    <path d="M336 234 C336 300 176 280 176 342"/>
+  </g>
+</svg>
