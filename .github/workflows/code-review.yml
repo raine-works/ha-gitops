@@ -1,0 +1,30 @@
+# Claude reviews every pull request against the rules, and answers replies to its comments. The workflow is Raineworks', in
+# raine-works/agents (.github/workflows/code-review.yml): this file only calls it, and comes from the raineworks-base skill's
+# templates/workflows/code-review.yml. Change the workflow there, for every repository at once; here, only its inputs
+# (with:). The Base rules check moves the pin when the shared workflows change.
+name: Code review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+  actions: read
+
+jobs:
+  code-review:
+    name: Code review
+    uses: raine-works/agents/.github/workflows/code-review.yml@bcc3f92307e34338be03ec7f6a243c3435604800 # raine-works/agents master
+    secrets: inherit
+    with:
+      focus: |
+        - Git credentials: deploy keys (kept in /config/.gitops with owner-only permissions) and webhook secrets must never be logged, returned, committed or put on a command line; webhook requests must be verified before anything runs.
+        - A bad configuration deployed: the check-then-rollback path in deploy.py must still run Home Assistant's configuration check before reloading and restore the previous state on failure; no path may reload without it.
+        - Git run as a subprocess: argument and path injection from repository URLs, branches or folder names; prompts off, timeouts kept; never cloning over Home Assistant's reserved folders.
+        - Host key handling (known_hosts) and concurrent deploys (one at a time per repository).
+        - Blocking I/O in the event loop.
