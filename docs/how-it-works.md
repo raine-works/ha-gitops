@@ -33,7 +33,7 @@ With a poll interval above 0, GitOps checks the remote every N minutes and deplo
 
 1. **Fetch.** The first time, GitOps clones the branch into the folder (it refuses a folder that has files and isn't a clone). After that it fetches the branch and resets the folder to it. Edits made to tracked files in Home Assistant are discarded. Files the repository doesn't track are left alone. If the repository URL changed, the clone's `origin` is updated.
 2. **Compare.** If the commit is the one already checked out, the deploy is `unchanged` and nothing else happens.
-3. **Check.** Unless turned off in the options, GitOps runs Home Assistant's own configuration check (the one Developer tools → Check configuration runs).
+3. **Check.** Always (it can't be turned off), GitOps runs Home Assistant's own configuration check (the one Developer tools → Check configuration runs).
 4. **Roll back.** If the check reports errors, the folder is reset to the commit it had before, nothing is reloaded, `gitops_deploy_failed` is fired and a notification shows the errors. The status is `rolled_back`. If going back fails too, the status is `failed` and the error says so. On a first deploy there is no earlier commit to go back to.
 5. **Reload.** Depending on the options: everything Home Assistant can reload (`homeassistant.reload_all`), the chosen integrations (each one's `reload` action, if it has one), or nothing. A reload that fails is logged and the rest go on.
 6. **Announce.** `gitops_deployed` is fired, and the failure notification from an earlier deploy is dismissed.

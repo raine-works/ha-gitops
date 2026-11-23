@@ -38,13 +38,11 @@
         "title": "Deploys",
         "data": {
           "branch": "Branch",
-          "check_config": "Check the configuration first",
           "reload": "Then reload",
           "reload_domains": "Integrations to reload",
           "poll_minutes": "Check for pushes every (minutes)"
         },
         "data_description": {
-          "check_config": "Home Assistant's own check; a configuration that fails it is rolled back and nothing reloads",
           "reload_domains": "When reloading chosen integrations",
           "poll_minutes": "0 = only on the webhook, the button or the action"
         }

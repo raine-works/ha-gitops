@@ -23,7 +23,6 @@ from homeassistant.util import dt as dt_util
 
 from .const import (
     CONF_BRANCH,
-    CONF_CHECK_CONFIG,
     CONF_FOLDER,
     CONF_KEY_ID,
     CONF_RELOAD,
@@ -164,29 +163,26 @@ class Deployer:
             else [],
         )
 
-        if self.entry.options.get(CONF_CHECK_CONFIG, True):
-            errors = await self._check()
-            if errors:
-                result.status = STATUS_ROLLED_BACK
-                result.error = "\n".join(errors)
-                if previous:
-                    try:
-                        await repo.reset(previous)
-                    except GitError as error:
-                        result.status = STATUS_FAILED
-                        result.error += (
-                            f"\n\nGoing back to {previous[:7]} failed too: {error}"
-                        )
-                return self._failed(
-                    result,
-                    f"The configuration at {commit[:7]} doesn't pass Home Assistant's check"
-                    + (
-                        f", so the folder went back to {previous[:7]}"
-                        if previous
-                        else ""
+        # Always check before reloading, and roll back a configuration that
+        # fails: reloading an unchecked one can take Home Assistant down.
+        errors = await self._check()
+        if errors:
+            result.status = STATUS_ROLLED_BACK
+            result.error = "\n".join(errors)
+            if previous:
+                try:
+                    await repo.reset(previous)
+                except GitError as error:
+                    result.status = STATUS_FAILED
+                    result.error += (
+                        f"\n\nGoing back to {previous[:7]} failed too: {error}"
                     )
-                    + "; nothing was reloaded.",
-                )
+            return self._failed(
+                result,
+                f"The configuration at {commit[:7]} doesn't pass Home Assistant's check"
+                + (f", so the folder went back to {previous[:7]}" if previous else "")
+                + "; nothing was reloaded.",
+            )
 
         await self._reload()
         return self._done(result)

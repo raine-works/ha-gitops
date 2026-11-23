@@ -188,6 +188,24 @@ async def test_a_failing_check_rolls_back(
     assert f"gitops_{entry.entry_id}" in notifications
 
 
+async def test_the_check_cannot_be_skipped(
+    hass: HomeAssistant, origin: Origin, config_dir: Path
+) -> None:
+    """An entry saved with the old check_config option off is still checked: a failing configuration never reloads."""
+    reloads = async_mock_service(hass, "automation", "reload")
+    entry = await setup(hass, origin, check_config=False)
+    good = git(config_dir / "home", "rev-parse", "HEAD")
+    origin.commit({"automations.yaml": "broken: [\n"}, "Break it")
+    bad = SimpleNamespace(errors=[SimpleNamespace(domain=None, message="Bad YAML")])
+    with patch(
+        "custom_components.gitops.deploy.async_check_ha_config_file", return_value=bad
+    ):
+        result = await entry.runtime_data.async_deploy("test")
+    assert result.status == "rolled_back" and result.error == "Bad YAML"
+    assert git(config_dir / "home", "rev-parse", "HEAD") == good
+    assert len(reloads) == 1  # only the first clone's
+
+
 async def test_an_unreachable_repository_fails(
     hass: HomeAssistant, origin: Origin, tmp_path: Path
 ) -> None:

@@ -10,7 +10,6 @@ CONF_WEBHOOK_ID = "webhook_id"
 CONF_SECRET = "secret"
 
 # Options
-CONF_CHECK_CONFIG = "check_config"
 CONF_RELOAD = "reload"
 CONF_RELOAD_DOMAINS = "reload_domains"
 CONF_POLL_MINUTES = "poll_minutes"

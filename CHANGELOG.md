@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- Every deploy runs Home Assistant's configuration check before reloading: the **Check the configuration first** option is gone, and an entry that had it off is checked too.
+
 ## 1.0.1
 
 - A new icon, in Raineworks' style: a branch merging back, its merge commit lit in the peach-to-teal gradient, on a black tile.

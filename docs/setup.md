@@ -57,7 +57,7 @@ The first deploy clones the repository. A deploy also runs at startup when the f
 
 ## Changing the settings later
 
-Settings → Devices & services → GitOps → **Configure** opens the options: branch, the configuration check, what to reload and polling. They are listed in [Options](reference/options.md). Saving them reloads the repository.
+Settings → Devices & services → GitOps → **Configure** opens the options: branch, what to reload and polling. They are listed in [Options](reference/options.md). Saving them reloads the repository.
 
 ## Removing a repository
 
