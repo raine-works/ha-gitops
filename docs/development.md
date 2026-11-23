@@ -24,7 +24,7 @@ pytest -q
 
 A virtual environment works the same: `python3.14 -m venv .venv && .venv/bin/pip install -r requirements-test.txt`.
 
-`.github/workflows/validate.yaml` runs hassfest and the Marketplace repository validation.
+`.github/workflows/validate.yaml` runs hassfest and the Marketplace repository validation, from images pinned by digest. Weekly, the Image pins workflow (`.github/workflows/image-pins.yml`, Raineworks' shared one) checks those pins against their tags and opens a pull request moving any that moved.
 
 ## Brand images
 
