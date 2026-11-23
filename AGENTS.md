@@ -21,7 +21,6 @@ configuration that fails it, and reloads what changed. Layout and file roles:
   validation.
 - **Release:** bump `version` in `custom_components/gitops/manifest.json` and add a [CHANGELOG.md](CHANGELOG.md) entry.
   When `Test` passes on `master`, the `Release` workflow creates the GitHub release `v<version>` if the tag is new.
-  Never tag by hand.
 - A deploy always checks the configuration before reloading and rolls back on failure; keep that order.
 - Deploy keys live in `/config/.gitops/` with owner-only permissions and webhook secrets are verified on every request;
   neither is ever logged or shown after setup. Git runs as a subprocess with prompts off and a time limit.
