@@ -17,7 +17,6 @@ from homeassistant.config_entries import (
 from homeassistant.core import callback
 from homeassistant.helpers.network import NoURLAvailableError
 from homeassistant.helpers.selector import (
-    BooleanSelector,
     NumberSelector,
     NumberSelectorConfig,
     NumberSelectorMode,
@@ -29,7 +28,6 @@ from homeassistant.helpers.selector import (
 
 from .const import (
     CONF_BRANCH,
-    CONF_CHECK_CONFIG,
     CONF_FOLDER,
     CONF_KEY_ID,
     CONF_POLL_MINUTES,
@@ -227,9 +225,6 @@ class GitOpsOptionsFlow(OptionsFlow):
                             CONF_BRANCH, self.config_entry.data[CONF_BRANCH]
                         ),
                     ): TextSelector(),
-                    probatio.Required(
-                        CONF_CHECK_CONFIG, default=options.get(CONF_CHECK_CONFIG, True)
-                    ): BooleanSelector(),
                     probatio.Required(
                         CONF_RELOAD, default=options.get(CONF_RELOAD, RELOAD_ALL)
                     ): SelectSelector(
