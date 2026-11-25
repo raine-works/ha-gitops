@@ -146,7 +146,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: GitOpsConfigEntry) -> bo
     async def catch_up(reason: str) -> None:
         """Deploy when the folder isn't the branch's latest (a push missed while down)."""
         try:
-            behind = not deployer.repo.cloned or await deployer.async_behind()
+            behind = not await deployer.repo.cloned() or await deployer.async_behind()
         except GitError as error:
             _LOGGER.warning("Couldn't reach %s: %s", entry.title, error)
             return

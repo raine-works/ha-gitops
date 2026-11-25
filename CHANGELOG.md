@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- A deploy checks its folder (whether it's a clone, or already has other files) in a worker thread, off Home Assistant's event loop.
+
 ## 1.0.2
 
 - Every deploy runs Home Assistant's configuration check before reloading: the **Check the configuration first** option is gone, and an entry that had it off is checked too.

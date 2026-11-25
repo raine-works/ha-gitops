@@ -217,6 +217,20 @@ async def test_an_unreachable_repository_fails(
     assert result.status == "failed" and result.error
 
 
+async def test_a_folder_with_other_files_is_never_cloned_over(
+    hass: HomeAssistant, origin: Origin, config_dir: Path
+) -> None:
+    """A deploy into a folder that has files but isn't a clone fails and leaves it alone."""
+    folder = config_dir / "home"
+    folder.mkdir()
+    (folder / "mine.yaml").write_text("mine: 1\n")
+    entry = await setup(hass, origin)
+    result = await entry.runtime_data.async_deploy("test")
+    assert result.status == "failed" and "already has files" in result.error
+    assert not (folder / ".git").exists()
+    assert sorted(p.name for p in folder.iterdir()) == ["mine.yaml"]
+
+
 async def test_the_webhook_deploys_its_branch(
     hass: HomeAssistant, origin: Origin, hass_client_no_auth
 ) -> None:
