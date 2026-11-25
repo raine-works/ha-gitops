@@ -105,10 +105,16 @@ class Repo:
             raise GitError("\n".join(lines[-8:]) or f"git {args[0]} failed")
         return out.decode(errors="replace").strip()
 
-    @property
-    def cloned(self) -> bool:
-        """Whether the folder holds the clone."""
-        return (self.path / ".git").is_dir()
+    async def cloned(self) -> bool:
+        """Whether the folder holds the clone.
+
+        The check runs in a worker thread: it's called on Home Assistant's event loop.
+        """
+        return await asyncio.to_thread((self.path / ".git").is_dir)
+
+    def _has_files(self) -> bool:
+        """Whether the folder exists and has files in it. Blocking: run in a thread."""
+        return self.path.exists() and any(self.path.iterdir())
 
     async def remote_head(self) -> str:
         """The branch's latest commit on the remote."""
@@ -119,7 +125,7 @@ class Repo:
 
     async def head(self) -> str | None:
         """The commit checked out, or None before the first clone."""
-        if not self.cloned:
+        if not await self.cloned():
             return None
         return await self.git("rev-parse", "HEAD", cwd=self.path)
 
@@ -129,8 +135,8 @@ class Repo:
         The repository is the source of truth: local edits to tracked files are discarded,
         untracked files are left.
         """
-        if not self.cloned:
-            if self.path.exists() and any(self.path.iterdir()):
+        if not await self.cloned():
+            if await asyncio.to_thread(self._has_files):
                 raise GitError(
                     f"{self.path} already has files and isn't a clone of the repository"
                 )
