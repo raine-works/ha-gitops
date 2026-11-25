@@ -19,8 +19,10 @@ configuration that fails it, and reloads what changed. Layout and file roles:
 - **Check:** `ruff check custom_components`, `ruff format --check custom_components` and `pytest -q` (Python 3.14,
   `requirements-test.txt`); the `Test` workflow runs them, and `Validate` runs hassfest and the Marketplace (HACS)
   validation.
-- **Release:** bump `version` in `custom_components/gitops/manifest.json` and add a [CHANGELOG.md](CHANGELOG.md) entry.
-  When `Test` passes on `master`, the `Release` workflow creates the GitHub release `v<version>` if the tag is new.
+- **Release:** merge the release pull request: `release-pr.yml` (Raineworks' shared Release pull request) keeps one pull request, `Release v<version>`, open on `master` with the next version: major for a breaking change (`type!:`), minor for a `feat`, patch for anything else that ships (a change to `custom_components/`), with
+  [CHANGELOG.md](CHANGELOG.md)'s `## Unreleased` entries under that version. When `Test` passes on `master`, the
+  `Release` workflow creates `v<version>`. Never bump the version by hand; a change worth noting adds its entry under
+  `## Unreleased`.
 - A deploy always checks the configuration before reloading and rolls back on failure; keep that order.
 - Deploy keys live in `/config/.gitops/` with owner-only permissions and webhook secrets are verified on every request;
   neither is ever logged or shown after setup. Git runs as a subprocess with prompts off and a time limit.

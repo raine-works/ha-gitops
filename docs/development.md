@@ -32,4 +32,4 @@ A virtual environment works the same: `python3.14 -m venv .venv && .venv/bin/pip
 
 ## Releasing
 
-Bump `version` in `custom_components/gitops/manifest.json` and add a [changelog](../CHANGELOG.md) entry. When the change reaches `master` and the Test workflow passes, the Release workflow creates the GitHub release `v<version>` with generated notes, if that tag doesn't exist yet.
+A change worth noting adds its [changelog](../CHANGELOG.md) entry under `## Unreleased`. Don't bump `version` in `custom_components/gitops/manifest.json` by hand: on every push to `master`, the Release pull request workflow keeps one pull request, `Release v<version>`, open with the next version (major for a breaking change, `type!:`; minor for a `feat`; patch for anything else that changes `custom_components/`) and the `## Unreleased` entries under it. To release, merge it. When it reaches `master` and the Test workflow passes, the Release workflow creates the GitHub release `v<version>` with generated notes, if that tag doesn't exist yet.
