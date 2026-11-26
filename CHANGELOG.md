@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.3
 
 - A deploy checks its folder (whether it's a clone, or already has other files) in a worker thread, off Home Assistant's event loop.
 
